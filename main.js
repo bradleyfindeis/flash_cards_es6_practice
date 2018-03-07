@@ -1,41 +1,97 @@
-let arr = [
-  { question: "1 question", answer: "1 Answer" },
-  { question: "2 question", answer: "2 Answer" },
-  { question: "3 question", answer: "3 Answer" },
-  { question: "4 question", answer: "4 Answer" },
-  { question: "5 question", answer: "5 Answer" },
-  { question: "6 question", answer: "6 Answer" },
-  { question: "7 question", answer: "7 Answer" },
-  { question: "8 question", answer: "8 Answer" },
-  { question: "9 question", answer: "9 Answer" },
+// Takes that array 
+  // loops through 
+  // creates a new card for each 
+  //     item in the array
+  //    populates #card w/ each item 
+  // using #question and # answer 
 
-];
 
-const div = (question, answer) => (
+  let arr = [
+    { question: "This is the first question", answer: "this is the first answer" },
+    { question: "This is the second question", answer: "this is the second answer" },
+    { question: "This is the third question", answer: "this is the third answer" },
+    { question: "This is the fourth question", answer: "this is the fourth answer" },
+    { question: "This is the fifth question", answer: "this is the fifth answer" },
+  ];
+  
+  const div = (apple, zebra, id) =>
+    `<div class='col s12 m6 l6' id="${id}">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title activator grey-text text-darken-4">Question<i class="material-icons right">more_vert</i></span>
+            <p id='question'>${apple}</p>
+          </div>
+          <div class="card-reveal">
+            <span class="card-title grey-text text-darken-4">Answer<i class="material-icons right">close</i></span>
+            <p id='answer'>${zebra}</p>
+          </div>
+          <div class="card-action">
+            <button class="edit waves-effect waves-light btn light-blue accent-3" id="${id}">Edit</button>
+            <button class="delete waves-effect waves-light btn red accent-4" id="${id}">Delete</button>
+          </div>
+        </div>
+      </div>`
 
-`<div class='col s12 m6'>
-<div class="card" id="child">
-<div class="card-content">
-  <span class="card-title activator grey-text text-darken-4">Question<i class="material-icons right">more_vert</i></span>
-  <p class="question"> ${question} </p>
-</div>
-<div class="card-reveal">
-  <span class="card-title grey-text text-darken-4">Answer<i class="material-icons right">close</i></span>
-  <p id="answer">${answer}</p>
-</div>
-</div>
-</div>
-</div>`
-)
-
-const cards = (someArr) =>{
-  someArr.map((item, i) => {
-    let box = div(item.question, item.answer)
-    $('#gridMofo').append(box)
+      const form = () =>
+      ``
+      
+  
+  const cards = (Arr) => {
+     $('#gridMofo').empty()
+    Arr.map( (item, i) => {
+      let box = div(item.question, item.answer, i)
+      $('#gridMofo').append(box)
+    })
+  }
+  
+  const addCard = (q, a) => {
+    let hash = {question: q, answer: a}
+    arr = [hash, ...arr] 
+    cards(arr)
+  }
+  
+  const deleteCard = (i) => {
+    let item = arr.splice(i,1)
+    arr = [...arr]
+    cards(arr)
+  }
+  
+  const editCard = (i) => {
+    
+    let item = arr[i]
+    let q = $('#q_input').splice(1, 0, val(item.question))
+    let a = $("#a_input").splice(2, 0, val(item.answer))
+  }
+  
+  const clearForm = () => {
+    $(document).on('click', "#submit", function () {
+      $('#q_input').val("")
+      $("#a_input").val("")
+    })
+  }
+  
+  
+  $(document).ready( function() {
+    cards(arr)
+    $('#submit').on('click', function(){
+      let q = this.form.children[0].children[0].children[0].value;
+      let a = this.form.children[0].children[1].children[0].value;
+      addCard(q,a) 
+      clearForm() 
+    })
+  
+    $(document).on('click', '.delete', function() {
+      deleteCard(parseInt(this.id)) 
+    })
+    
+    $(document).on("click", ".edit", function() {
+       $("#gridMofo").empty();
+        editCard(parseInt(this.id)); 
+     })
   })
-}
 
 
-$(document).ready( function() {
-  cards(arr)
-})
+
+
+
+  
